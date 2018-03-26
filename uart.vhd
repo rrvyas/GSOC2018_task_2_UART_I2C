@@ -20,23 +20,23 @@ ENTITY uart IS
 
 		baud_rate	:	INTEGER		:= 9600;		-- baud rate in bits/second
 		rc_rate		:	INTEGER		:= 16;			-- oversampling rate to find center of receive bits (in samples per baud period)
-		clk_freq    : 	INTEGER		:= 10000000;	--frequency of system clock in Hertz
-        d_width		:	INTEGER		:= 8; 			-- data bus width
+		clk_freq        : 	INTEGER		:= 10000000;	--frequency of system clock in Hertz
+                d_width         :	INTEGER		:= 8; 			-- data bus width
 		parity		:	INTEGER		:= 1;		    --0 for no parity, 1 for parity
 		parity_type	:	STD_LOGIC	:= '0');		--'0' for even, '1' for odd parity
 
 	PORT(
-		clk		:	IN		STD_LOGIC;										--system clock
+		clk	:	IN		STD_LOGIC;										--system clock
 		reset	:	IN		STD_LOGIC;										--ascynchronous reset
 		tx_en	:	IN		STD_LOGIC;										--initiate transmission
 		tx_data	:	IN		STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);           --data to transmit
-		tx_busy	:	OUT	    STD_LOGIC;  									
+		tx_busy	:	OUT	        STD_LOGIC;  									
 
-        rx		:	IN		STD_LOGIC;										--receive pin
+        rx		:	IN	    STD_LOGIC;										--receive pin
 		rx_busy	:	OUT	    STD_LOGIC;										--data reception in progress
 		new_data:	OUT	    STD_LOGIC;										--FLAG FOR I2C TO START TRANSACTION
 
-        rx_error:	OUT	    STD_LOGIC;										--start, parity, or stop bit error detected
+                rx_error:	OUT	    STD_LOGIC;						        --start, parity, or stop bit error detected
 		rx_data	:	OUT	    STD_LOGIC_VECTOR(d_width-1 DOWNTO 0);	        --data received
 		tx		:	OUT	    STD_LOGIC);										--transmit pin
 END uart;
@@ -47,12 +47,12 @@ ARCHITECTURE logic OF uart IS
 	
     SIGNAL	tx_state			:	tx_state_machine;							--transmit state machine
 	SIGNAL	tx_parity			:	STD_LOGIC_VECTOR(d_width DOWNTO 0);  	    --calculation of transmit parity
-	SIGNAL	tx_data_buffer		:	STD_LOGIC_VECTOR(d_width+1 + parity DOWNTO 0) := (OTHERS => '1');	--values to be transmitted
+	SIGNAL	tx_data_buffer		        :	STD_LOGIC_VECTOR(d_width+1 + parity DOWNTO 0) := (OTHERS => '1');	--values to be transmitted
 
     SIGNAL	rx_state			:	rx_state_machine;							--receive state machine
-	SIGNAL	parity_error		:	STD_LOGIC;									--receive parity error flag
+	SIGNAL	parity_error		        :	STD_LOGIC;									--receive parity error flag
 	SIGNAL	rx_parity			:	STD_LOGIC_VECTOR(d_width DOWNTO 0);		    --calculation of receive parity
-	SIGNAL	rx_data_buffer		:	STD_LOGIC_VECTOR(d_width + parity DOWNTO 0) := (OTHERS => '0');  	--values received
+	SIGNAL	rx_data_buffer		        :	STD_LOGIC_VECTOR(d_width + parity DOWNTO 0) := (OTHERS => '0');  	--values received
 
 	SIGNAL	baud_tick			:	STD_LOGIC := '0';							 --periodic ticks that occurs at the baud rate
 	SIGNAL	rc_tick 			:	STD_LOGIC := '0'; 							 --periodic ticks that occurs at the oversampling rate
