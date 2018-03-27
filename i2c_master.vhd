@@ -40,11 +40,11 @@ END i2c_master;
 ARCHITECTURE logic OF i2c_master IS
 
 TYPE machine IS(idle, start, command, addr, slave_addr_ack, read, write, slave_data_ack, master_data_ack, stop); --needed states
-  SIGNAL state         : machine;                               --state machine
-  SIGNAL count         : INTEGER RANGE 0 TO 7 := 7;             --tracks bit number in transaction
-  SIGNAL count_clk     : INTEGER RANGE 0 TO 1023 := 0;          --clock divider counter  
-  SIGNAL scl_enable := '0'  :	STD_LOGIC;	                    --i2c clock enable
-  SIGNAL I2C_clk := '0'     :	STD_LOGIC;			            --i2c clock (Standard Frequency)
+  SIGNAL state              : machine;                               --state machine
+  SIGNAL count              : INTEGER RANGE 0 TO 7 := 7;             --tracks bit number in transaction
+  SIGNAL count_clk          : INTEGER RANGE 0 TO 1023 := 0;          --clock divider counter  
+  SIGNAL scl_enable := '0'  :	STD_LOGIC;	                           --i2c clock enable
+  SIGNAL I2C_clk := '0'     :	STD_LOGIC;			                       --i2c clock (Standard Frequency)
 
 BEGIN
 ---------------------------- CLOCK DIVISION (I2C) ---------------------
@@ -164,13 +164,13 @@ BEGIN
 
     END IF;
     ------------------------------- SCL ENABLE/DISABLE -------------------------
-    IF falling_edge(I2C_clk) THEN
+    IF falling_edge(I2C_clk) THEN                                         --scl works at Falling edge
 
         IF (RESET = '1') THEN
         scl_enable <= '0';
 
         ELSE
-            IF((state = idle) OR  (state = start) OR (state = stop)) THEN
+            IF((state = idle) OR  (state = start) OR (state = stop)) THEN  --scl disable in IDLE, START and STOP states
                 scl_enable <= '0';
             ELSE
                 scl_enable <= '1';
