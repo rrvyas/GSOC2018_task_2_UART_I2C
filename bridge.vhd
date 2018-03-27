@@ -28,14 +28,14 @@ USE ieee.std_logic_1164.all;
 ENTITY Bridge IS
 	
 	PORT(
-		clk_sys	        :	IN		STD_LOGIC;								  --system clock
-		reset_sys	:	IN		STD_LOGIC;								  --ascynchronous reset
+		clk_sys	        :IN STD_LOGIC;		--system clock
+		reset_sys	:IN STD_LOGIC;		--ascynchronous reset
 		
-		sda_bridge  : INOUT STD_LOGIC;                            --sdl
-        	scl_bridge  : OUT STD_LOGICl;                                     --scl
+		sda_bridge      : INOUT STD_LOGIC;      --sdl
+        	scl_bridge      : OUT STD_LOGICl;       --scl
 
-        	UART_tx_bridge : OUT STD_LOGIC;                                   --UART tx
-        	UART_rx_bridge : IN STD_LOGIC);                                   --UART rx
+        	UART_tx_bridge : OUT STD_LOGIC;         --UART tx
+        	UART_rx_bridge : IN STD_LOGIC);         --UART rx
        
 END Bridge;
 
@@ -60,38 +60,38 @@ end component;
 ----------------UART Component -------------------------------------
 component uart
 PORT(
-		clk	:	IN		STD_LOGIC;										--system clock
-		reset	:	IN		STD_LOGIC;										--ascynchronous reset
-		tx_en	:	IN		STD_LOGIC;										--initiate transmission
-		tx_data	:	IN		STD_LOGIC_VECTOR(8 DOWNTO 0);                   --data to transmit
-		tx_busy	:	OUT	        STD_LOGIC;  									
+		clk	:IN	STD_LOGIC;					--system clock
+		reset	:IN	STD_LOGIC;					--ascynchronous reset
+		tx_en	:IN	STD_LOGIC;					--initiate transmission
+		tx_data	:IN	STD_LOGIC_VECTOR(8 DOWNTO 0);                   --data to transmit
+		tx_busy	:OUT	STD_LOGIC;  									
 
-                rx	:	IN		STD_LOGIC;										--receive pin
-		rx_busy	:	OUT	        STD_LOGIC;										--data reception in progress
-		new_data:	OUT	        STD_LOGIC;										--FLAG FOR I2C TO START TRANSACTION
+                rx	:IN	STD_LOGIC;					--receive pin
+		rx_busy	:OUT	STD_LOGIC;					--data reception in progress
+		new_data:OUT    STD_LOGIC;					--FLAG FOR I2C TO START TRANSACTION
 
-                rx_error:	OUT	    STD_LOGIC;										--start, parity, or stop bit error detected
-		rx_data	:	OUT	    STD_LOGIC_VECTOR(8 DOWNTO 0);	                --data received
-		tx	:	OUT	    STD_LOGIC);										--transmit pin
+                rx_error:OUT	STD_LOGIC;					--start, parity, or stop bit error detected
+		rx_data	:OUT	STD_LOGIC_VECTOR(8 DOWNTO 0);	                --data received
+		tx	:OUT	STD_LOGIC);					--transmit pin
 end component;
 
 
 ---------------------------------------------------------------------
     TYPE 	state_machine IS(address, data);										
-    SIGNAL	state			:	state_machine;							-- state machine
+    SIGNAL	state			:   state_machine;		   -- state machine
 
-    SIGNAL	new_data_recv_I2C_UART			    :   STD_LOGIC := '0';		--FLAG for UART tx enable I2C -> bridge						
-    SIGNAL	tx_en_UART			            :	STD_LOGIC := '0';		--FLAG for UART tx enable bridge -> UART					
-    SIGNAL       new_data_recv_UART_I2C                     :   STD_LOGIC := '0';                           --FLAG for I2C transmitter UART -> bridge
-    SIGNAL	I2C_en 			                    :	STD_LOGIC := '0';	     	 --I2C enable 				
-    SIGNAL	sys_addr			            :	STD_LOGIC_VECTOR(6 DOWNTO 0);	  --I2C addr
-    SIGNAL	sys_cmd			                    :	STD_LOGIC;		         --I2C cmd
+    SIGNAL	new_data_recv_I2C_UART	:   STD_LOGIC := '0';		   --FLAG for UART tx enable I2C -> bridge						
+    SIGNAL	tx_en_UART		:   STD_LOGIC := '0';		   --FLAG for UART tx enable bridge -> UART					
+    SIGNAL       new_data_recv_UART_I2C :   STD_LOGIC := '0';              --FLAG for I2C transmitter UART -> bridge
+    SIGNAL	I2C_en 			:   STD_LOGIC := '0';	     	   --I2C enable 				
+    SIGNAL	sys_addr		:   STD_LOGIC_VECTOR(6 DOWNTO 0);  --I2C addr
+    SIGNAL	sys_cmd			:   STD_LOGIC;		           --I2C cmd
 
-    SIGNAL	data_UART_I2C_rx			    :	STD_LOGIC_VECTOR(7 DOWNTO 0);		--data (UART -> bridge)
-    SIGNAL	data_UART_I2C_tx			    :	STD_LOGIC_VECTOR(7 DOWNTO 0);		--data (bridge -> I2C)
+    SIGNAL	data_UART_I2C_rx	:   STD_LOGIC_VECTOR(7 DOWNTO 0);  --data (UART -> bridge)
+    SIGNAL	data_UART_I2C_tx	:   STD_LOGIC_VECTOR(7 DOWNTO 0);  --data (bridge -> I2C)
 
-    SIGNAL	data_I2C_UART_rx			    :	STD_LOGIC_VECTOR(7 DOWNTO 0);		--data (I2C -> bridge)
-    SIGNAL	data_I2C_UART_tx			    :	STD_LOGIC_VECTOR(7 DOWNTO 0);		--data (bridge -> UART)
+    SIGNAL	data_I2C_UART_rx	:   STD_LOGIC_VECTOR(7 DOWNTO 0);  --data (I2C -> bridge)
+    SIGNAL	data_I2C_UART_tx	:   STD_LOGIC_VECTOR(7 DOWNTO 0);  --data (bridge -> UART)
 
 BEGIN
 
@@ -148,7 +148,7 @@ BEGIN
                     END IF;
                 END IF;        
 
-		END CASE;		
+	END CASE;		
     END IF;
 END PROCESS;
 
