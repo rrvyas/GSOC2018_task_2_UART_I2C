@@ -96,13 +96,27 @@ end component;
 BEGIN
 
 ----------------------------------PORT MAPPING -------------------------
-C1: i2c_master port map(sys_cmd => command, sys_addr => addr, scl_bridge => scl,
-    sda_bridge => sda, reset_sys => reset, clk_sys => clk, I2C_en => en ,
-    new_data_recv_I2C_UART   => new_data_recv, data_UART_I2C_tx   => i2c_data_wr,
-    data_I2C_UART_rx  => i2c_data_rd) ;
-C2: uart port map(new_data_recv_UART_I2C => new_data, UART_tx_bridge => tx,
-    UART_rx_bridge => rx, reset_sys => reset, clk_sys => clk, tx_en_UART => tx_en,
-    data_UART_I2C_rx => rx_data, data_I2C_UART_tx => tx_data);
+C1: i2c_master port map
+	(sys_cmd => command,
+	 sys_addr => addr,
+	 scl_bridge => scl,
+    	 sda_bridge => sda,
+	 reset_sys => reset,
+	 clk_sys => clk,
+	 I2C_en => en ,
+         new_data_recv_I2C_UART   => new_data_recv,
+	 data_UART_I2C_tx   => i2c_data_wr,
+         data_I2C_UART_rx  => i2c_data_rd) ;
+	
+C2: uart port map
+	(new_data_recv_UART_I2C => new_data,
+	 UART_tx_bridge => tx,
+         UART_rx_bridge => rx,
+	 reset_sys => reset,
+	 clk_sys => clk,
+	 tx_en_UART => tx_en,
+         data_UART_I2C_rx => rx_data,
+	 data_I2C_UART_tx => tx_data);
 -----------------------------------------------------------------------
 
 
